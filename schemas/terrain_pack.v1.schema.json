@@ -213,6 +213,26 @@
                   "type": "integer",
                   "minimum": 1,
                   "description": "Total number of variants for this material."
+                },
+                "fallbackChain": {
+                  "type": "array",
+                  "description": "Ordered list of tile IDs attempted before this tile was resolved. Present only when matchType is fallback.",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["attempted", "reason"],
+                    "properties": {
+                      "attempted": {
+                        "type": "string",
+                        "description": "Tile ID that was attempted."
+                      },
+                      "reason": {
+                        "type": "string",
+                        "enum": ["not_found", "direction_filtered", "exact_match"],
+                        "description": "Why this attempt succeeded or was skipped."
+                      }
+                    }
+                  }
                 }
               },
               "required": ["kind", "matchType"]
