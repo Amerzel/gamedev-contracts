@@ -8,6 +8,7 @@
     "./fixtures/*": "./fixtures/*",
     "./data/*": "./data/*",
     "./validate": "./src/validate.js",
+    "./browser": "./src/validate-browser.js",
     "./materials": "./src/materials.js",
     "./types": "./dist/types/index.d.ts"
   },
@@ -15,6 +16,7 @@
     "*": {
       "materials": ["src/materials.d.ts"],
       "validate": ["src/validate.d.ts"],
+      "browser": ["src/validate-browser.d.ts"],
       "types": ["dist/types/index.d.ts"]
     }
   },
