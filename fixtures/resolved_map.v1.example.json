@@ -14,7 +14,19 @@
   "tileLookup": [
     { "id": 0, "tileId": "grass_base", "material": "grass", "kind": "base" },
     { "id": 1, "tileId": "dirt_base", "material": "dirt", "kind": "base" },
-    { "id": 2, "tileId": "water_base", "material": "water", "kind": "base" },
+    {
+      "id": 2, "tileId": "water_base", "material": "water", "kind": "base",
+      "frameOffset": 0,
+      "animation": {
+        "frames": [
+          { "col": 4, "row": 0, "durationMs": 200 },
+          { "col": 5, "row": 0, "durationMs": 200 },
+          { "col": 6, "row": 0, "durationMs": 300 },
+          { "col": 7, "row": 0, "durationMs": 200 }
+        ],
+        "loop": true
+      }
+    },
     { "id": 3, "tileId": "dirt_grass_ms0001", "kind": "transition", "boundary": ["dirt", "grass"], "transform": "none" }
   ],
   "layers": [

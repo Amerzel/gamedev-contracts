@@ -153,6 +153,39 @@
               "description": "Default frame duration in milliseconds for engine-side animation playback. If absent, the engine chooses its own default (e.g., 100ms). This is a hint only — engines may override per game context.",
               "exclusiveMinimum": 0
             },
+            "animation": {
+              "type": "object",
+              "description": "Per-frame animation model. Supports variable frame durations and non-contiguous atlas positions. When present, consumers use this instead of frameCount/frameDurationMs. When absent, consumers fall back to strip-based fields or treat the tile as static.",
+              "additionalProperties": false,
+              "required": ["frames"],
+              "properties": {
+                "frames": {
+                  "type": "array",
+                  "description": "Ordered list of animation frames. Each frame specifies an atlas position and duration.",
+                  "minItems": 2,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["col", "row", "durationMs"],
+                    "properties": {
+                      "col": { "type": "integer", "minimum": 0, "description": "Atlas column of this frame." },
+                      "row": { "type": "integer", "minimum": 0, "description": "Atlas row of this frame." },
+                      "durationMs": { "type": "number", "exclusiveMinimum": 0, "description": "Duration of this frame in milliseconds." }
+                    }
+                  }
+                },
+                "loop": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Whether the animation loops. Defaults to true if absent."
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Human-readable animation label for tooling display (e.g., \"ripple\", \"flow\", \"pulse\")."
+                }
+              }
+            },
             "spriteSize": {
               "type": "object",
               "description": "Rendered sprite dimensions in pixels. For oversized sprites (e.g. shadows, foam) that span more than one grid cell. If absent, assume atlas.tileSize × atlas.tileSize.",

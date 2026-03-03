@@ -73,5 +73,37 @@
     { "tileId": "dirt_base", "material": "dirt", "weight": 1.0 },
     { "tileId": "dirt_v1", "material": "dirt", "weight": 0.2 },
     { "tileId": "water_base", "material": "water", "weight": 1.0 }
-  ]
+  ],
+  "atlas": {
+    "image": "ashwood-forest.png",
+    "tileSize": 16,
+    "columns": 16,
+    "rows": 8
+  },
+  "tileIndex": {
+    "grass_base": { "col": 0, "row": 0 },
+    "grass_v1": { "col": 1, "row": 0 },
+    "dirt_base": { "col": 2, "row": 0 },
+    "dirt_v1": { "col": 3, "row": 0 },
+    "water_base": {
+      "col": 4, "row": 0,
+      "frameCount": 4,
+      "frameDurationMs": 200,
+      "animation": {
+        "frames": [
+          { "col": 4, "row": 0, "durationMs": 200 },
+          { "col": 5, "row": 0, "durationMs": 200 },
+          { "col": 6, "row": 0, "durationMs": 300 },
+          { "col": 7, "row": 0, "durationMs": 200 }
+        ],
+        "loop": true,
+        "label": "ripple"
+      }
+    },
+    "dirt_grass_ms0001": { "col": 0, "row": 1 },
+    "dirt_grass_ms0110": { "col": 1, "row": 1 },
+    "dirt_water_ms0001": { "col": 2, "row": 1 },
+    "grass_water_ms0110": { "col": 3, "row": 1 },
+    "grass_water_ms0110_outline": { "col": 4, "row": 1 }
+  }
 }

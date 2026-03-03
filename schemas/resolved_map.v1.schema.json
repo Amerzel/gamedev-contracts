@@ -222,6 +222,34 @@
           "type": "integer",
           "description": "Animation frame index (0-based) assigned by the composer. Engines add this to the tile's (col, row) to select the correct atlas frame. Absent means frame 0.",
           "minimum": 0
+        },
+        "animation": {
+          "type": "object",
+          "description": "Per-frame animation data. Supports variable frame durations and non-contiguous atlas positions. When present, consumers use this instead of frameOffset. When absent, consumers fall back to frameOffset or treat the tile as static.",
+          "additionalProperties": false,
+          "required": ["frames"],
+          "properties": {
+            "frames": {
+              "type": "array",
+              "description": "Ordered list of animation frames. Each frame specifies an atlas position and duration.",
+              "minItems": 2,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["col", "row", "durationMs"],
+                "properties": {
+                  "col": { "type": "integer", "minimum": 0, "description": "Atlas column of this frame." },
+                  "row": { "type": "integer", "minimum": 0, "description": "Atlas row of this frame." },
+                  "durationMs": { "type": "number", "exclusiveMinimum": 0, "description": "Duration of this frame in milliseconds." }
+                }
+              }
+            },
+            "loop": {
+              "type": "boolean",
+              "default": true,
+              "description": "Whether the animation loops. Defaults to true if absent."
+            }
+          }
         }
       },
       "allOf": [
