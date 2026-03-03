@@ -2,25 +2,57 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://forge-contracts.amerzel.dev/composition_report.v1.schema.json",
   "title": "composition_report.v1",
-  "description": "Placeholder schema for ForgeTileset diagnostic output format. Will be finalized during ForgeTileset Phase 1/2.",
+  "description": "ForgeTileset composition diagnostic report. Documents what was composed, coverage metrics, and any warnings.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema"],
+  "required": ["schema", "recipeId", "packId", "caseCoverage", "materialCount", "tileCount", "effectOverlayTiles", "warnings"],
   "properties": {
     "schema": {
       "const": "composition_report.v1",
       "description": "Document identity discriminator per VOCABULARY.md §1."
     },
-    "producer": {
+    "recipeId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Recipe identifier that produced this report."
+    },
+    "packId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Output pack identifier (matches terrain_pack.v1 packId)."
+    },
+    "caseCoverage": {
       "type": "object",
-      "description": "Stamp identifying the tool that generated this document (VOCABULARY.md §1).",
-      "additionalProperties": false,
-      "required": ["tool", "version"],
-      "properties": {
-        "tool": { "type": "string", "minLength": 1 },
-        "version": { "type": "string", "minLength": 1 },
-        "generatedAt": { "type": "string", "format": "date-time" }
+      "description": "Per-pair case coverage. Keys are 'materialA_materialB'.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["total", "covered", "missing"],
+        "properties": {
+          "total": { "type": "integer", "minimum": 0, "description": "Total cases expected for this pair's mask model." },
+          "covered": { "type": "integer", "minimum": 0, "description": "Cases actually generated." },
+          "missing": { "type": "array", "items": { "type": "integer" }, "description": "Case IDs that were expected but not generated." }
+        }
       }
+    },
+    "materialCount": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of materials in the recipe."
+    },
+    "tileCount": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total tiles in the output atlas (variants + transitions + overlays)."
+    },
+    "effectOverlayTiles": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of effect overlay tiles generated."
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Non-fatal warnings encountered during composition (palette mismatches, seamless checks, etc.)."
     }
   }
 }

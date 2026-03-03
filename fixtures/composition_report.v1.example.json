@@ -1,8 +1,16 @@
 {
   "schema": "composition_report.v1",
-  "producer": {
-    "tool": "ForgeTileset",
-    "version": "0.1.0",
-    "generatedAt": "2026-03-02T00:00:00.000Z"
-  }
+  "recipeId": "example-pack",
+  "packId": "example-pack",
+  "caseCoverage": {
+    "grass_water": {
+      "total": 14,
+      "covered": 14,
+      "missing": []
+    }
+  },
+  "materialCount": 2,
+  "tileCount": 22,
+  "effectOverlayTiles": 14,
+  "warnings": []
 }
