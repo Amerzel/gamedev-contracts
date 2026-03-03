@@ -1,8 +1,46 @@
 {
   "schema": "tileset_recipe.v1",
-  "producer": {
-    "tool": "ForgeTileset",
-    "version": "0.1.0",
-    "generatedAt": "2026-03-02T00:00:00.000Z"
-  }
+  "recipeId": "ashwood-forest",
+  "version": "1.0.0",
+  "tileSize": 32,
+  "meta": {
+    "description": "Recipe for the Ashwood Forest terrain tileset",
+    "author": "seedframe-team"
+  },
+  "materials": [
+    { "name": "dirt", "fill": "textures/dirt.png", "colorMap": "#8B6914", "elevation": 0 },
+    { "name": "grass", "fill": "textures/grass.png", "colorMap": "#4A7C2E", "elevation": 1 },
+    { "name": "water", "fill": "textures/water.png", "colorMap": "#2E5FA1", "elevation": 0 }
+  ],
+  "adjacency": [
+    { "boundary": ["dirt", "grass"], "maskModel": "ms-14" },
+    { "boundary": ["dirt", "water"], "maskModel": "ms-14" },
+    { "boundary": ["grass", "water"], "maskModel": "ms-14" }
+  ],
+  "style": {
+    "noiseOctaves": 3,
+    "noiseAmplitude": 2.5,
+    "noiseFrequency": 0.8,
+    "antiAlias": false
+  },
+  "variants": {
+    "countPerMaterial": 2,
+    "strategy": "grid-slice"
+  },
+  "atlas": {
+    "columns": 16,
+    "padding": 1
+  },
+  "defaultEffects": [
+    { "type": "outline", "width": 2, "mode": "darken", "darkenFactor": 0.3 }
+  ],
+  "pairEffects": [
+    {
+      "boundary": ["grass", "water"],
+      "effects": [
+        { "type": "outline", "width": 1, "mode": "darken", "darkenFactor": 0.2 },
+        { "type": "cliff-shadow", "depth": 3, "alpha": 0.4, "direction": "south-east" }
+      ]
+    }
+  ]
 }
