@@ -12,22 +12,60 @@
   },
   "seed": 42,
   "tileLookup": [
-    { "id": 0, "tileId": "grass_base", "material": "grass", "kind": "base" },
-    { "id": 1, "tileId": "dirt_base", "material": "dirt", "kind": "base" },
     {
-      "id": 2, "tileId": "water_base", "material": "water", "kind": "base",
+      "id": 0,
+      "tileId": "grass_base",
+      "material": "grass",
+      "kind": "base"
+    },
+    {
+      "id": 1,
+      "tileId": "dirt_base",
+      "material": "dirt",
+      "kind": "base"
+    },
+    {
+      "id": 2,
+      "tileId": "water_base",
+      "material": "water",
+      "kind": "base",
       "frameOffset": 0,
       "animation": {
         "frames": [
-          { "col": 4, "row": 0, "durationMs": 200 },
-          { "col": 5, "row": 0, "durationMs": 200 },
-          { "col": 6, "row": 0, "durationMs": 300 },
-          { "col": 7, "row": 0, "durationMs": 200 }
+          {
+            "col": 4,
+            "row": 0,
+            "durationMs": 200
+          },
+          {
+            "col": 5,
+            "row": 0,
+            "durationMs": 200
+          },
+          {
+            "col": 6,
+            "row": 0,
+            "durationMs": 300
+          },
+          {
+            "col": 7,
+            "row": 0,
+            "durationMs": 200
+          }
         ],
         "loop": true
       }
     },
-    { "id": 3, "tileId": "dirt_grass_ms0001", "kind": "transition", "boundary": ["dirt", "grass"], "transform": "none" }
+    {
+      "id": 3,
+      "tileId": "dirt_grass_ms0001",
+      "kind": "transition",
+      "boundary": [
+        "dirt",
+        "grass"
+      ],
+      "transform": "none"
+    }
   ],
   "layers": [
     {
@@ -63,8 +101,14 @@
     "semanticMapRef": "ashwood-forest_semantic.v1.json",
     "levelIntentRef": "ashwood-forest_intent.v1.json"
   },
-  "consumed_fields": ["regions", "paths", "style_hints.boundary_softening"],
-  "ignored_fields": ["style_hints.palette_override"],
+  "consumed_fields": [
+    "regions",
+    "paths",
+    "style_hints.boundary_softening"
+  ],
+  "ignored_fields": [
+    "style_hints.palette_override"
+  ],
   "collisionGrid": {
     "encoding": "rle",
     "rows": [
@@ -80,47 +124,95 @@
   },
   "variantWeights": {
     "grass": [
-      { "tileId": "grass_base", "weight": 1.0 },
-      { "tileId": "grass_v1", "weight": 0.3 }
+      {
+        "tileId": "grass_base",
+        "weight": 1.0
+      },
+      {
+        "tileId": "grass_v1",
+        "weight": 0.3
+      }
     ],
     "dirt": [
-      { "tileId": "dirt_base", "weight": 1.0 },
-      { "tileId": "dirt_v1", "weight": 0.2 }
+      {
+        "tileId": "dirt_base",
+        "weight": 1.0
+      },
+      {
+        "tileId": "dirt_v1",
+        "weight": 0.2
+      }
     ],
     "water": [
-      { "tileId": "water_base", "weight": 1.0 }
+      {
+        "tileId": "water_base",
+        "weight": 1.0
+      }
     ]
   },
   "cellClassification": [
     {
-      "x": 1, "y": 1,
-      "base": { "material": "dirt", "variant": "dirt_base", "variantRoll": 0.55 },
+      "x": 1,
+      "y": 1,
+      "base": {
+        "material": "dirt",
+        "variant": "dirt_base",
+        "variantRoll": 0.55
+      },
       "transition": {
-        "boundary": ["dirt", "grass"],
+        "boundary": [
+          "dirt",
+          "grass"
+        ],
         "msCase": 8,
         "cornerBits": "0001",
         "hit": "exact",
-        "tileId": "dirt_grass_ms0001"
+        "tileId": "dirt_grass_ms0001",
+        "positions": [
+          "DL"
+        ]
       }
     },
     {
-      "x": 2, "y": 2,
-      "base": { "material": "water", "variant": "water_base", "variantRoll": 0.10 }
+      "x": 2,
+      "y": 2,
+      "base": {
+        "material": "water",
+        "variant": "water_base",
+        "variantRoll": 0.1
+      }
     },
     {
-      "x": 1, "y": 2,
-      "base": { "material": "grass", "variant": "grass_base", "variantRoll": 0.33 },
+      "x": 1,
+      "y": 2,
+      "base": {
+        "material": "grass",
+        "variant": "grass_base",
+        "variantRoll": 0.33
+      },
       "transition": {
-        "boundary": ["dirt", "grass"],
+        "boundary": [
+          "dirt",
+          "grass"
+        ],
         "msCase": 6,
         "cornerBits": "0110",
         "hit": "transform",
         "tileId": "dirt_grass_ms0001",
         "sourceCase": 8,
-        "transform": "flipX"
+        "transform": "flipX",
+        "positions": [
+          "UL",
+          "UR"
+        ]
       },
       "overlays": [
-        { "renderOrder": 10, "layerTag": "outline", "hit": "exact", "tileId": "grass_water_ms0110_outline" }
+        {
+          "renderOrder": 10,
+          "layerTag": "outline",
+          "hit": "exact",
+          "tileId": "grass_water_ms0110_outline"
+        }
       ]
     }
   ],

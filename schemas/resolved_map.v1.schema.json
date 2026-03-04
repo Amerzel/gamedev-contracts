@@ -448,7 +448,13 @@
           "properties": {
             "boundary": { "type": "array", "items": { "type": "string" }, "minItems": 2, "maxItems": 2 },
             "msCase": { "type": "integer", "minimum": 0, "maximum": 15 },
-            "cornerBits": { "type": "string", "pattern": "^[01]{4}$" },
+            "cornerBits": { "type": "string", "description": "Deprecated: prefer the positions array. Will be removed in resolved_map.v2.", "pattern": "^[01]{4}$" },
+            "positions": {
+              "type": "array",
+              "description": "Named spatial positions indicating which corners have the secondary material. Alphabetically sorted. Authoritative when present — see VOCABULARY.md §9.",
+              "items": { "type": "string", "enum": ["DL", "DR", "UL", "UR"] },
+              "uniqueItems": true
+            },
             "hit": {
               "type": "string",
               "enum": ["exact", "transform", "gap"],
