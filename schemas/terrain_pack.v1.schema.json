@@ -409,7 +409,12 @@
               "required": ["model"]
             },
             "then": {
-              "required": ["wangCode"]
+              "required": ["wangCode"],
+              "properties": {
+                "positions": {
+                  "items": { "enum": ["E", "N", "S", "W"] }
+                }
+              }
             }
           },
           {
