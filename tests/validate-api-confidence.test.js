@@ -76,6 +76,6 @@ describe('Validation API Confidence', () => {
     const hash = createHash('sha256')
       .update(JSON.stringify(resolvedMap))
       .digest('hex');
-    expect(hash).toBe('ebb34dc61afbdc5ffac8b5f1c3f8a251248ae123f97f464600ba454b2d8e6380');
+    expect(hash).toBe('435e08a46768a696d87eb964ad76784e92acb52243dbfcaca1d1a3e1bea2097f');
   });
 });

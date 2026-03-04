@@ -105,5 +105,25 @@
     "dirt_water_ms0001": { "col": 2, "row": 1 },
     "grass_water_ms0110": { "col": 3, "row": 1 },
     "grass_water_ms0110_outline": { "col": 4, "row": 1 }
+  },
+  "materialProperties": {
+    "grass": {
+      "walkable": true,
+      "movementCost": 1.0,
+      "collisionGroup": "terrain",
+      "soundGroup": "grass"
+    },
+    "dirt": {
+      "walkable": true,
+      "movementCost": 1.2,
+      "collisionGroup": "terrain",
+      "soundGroup": "stone"
+    },
+    "water": {
+      "walkable": false,
+      "movementCost": 0,
+      "collisionGroup": "obstacle",
+      "soundGroup": "water"
+    }
   }
 }

@@ -162,6 +162,72 @@
           "additionalProperties": true
         }
       }
+    },
+    "collisionGrid": {
+      "type": "object",
+      "description": "Derived collision/walkability grid. Cell values are integer IDs described by legend. Derived from material identity per cell and materialProperties from the terrain pack.",
+      "additionalProperties": false,
+      "required": ["encoding", "rows", "legend"],
+      "properties": {
+        "encoding": { "const": "rle" },
+        "rows": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^[0-9]+:[1-9][0-9]*(,[0-9]+:[1-9][0-9]*)*$" }
+        },
+        "legend": {
+          "type": "object",
+          "description": "Maps integer IDs to collision category names.",
+          "patternProperties": { "^[0-9]+$": { "type": "string", "minLength": 1 } },
+          "additionalProperties": false
+        }
+      }
+    },
+    "variantWeights": {
+      "type": "object",
+      "description": "Per-material variant weight table. Raw relative weights from the terrain pack (not normalized). Consumers normalize as needed.",
+      "patternProperties": {
+        "^[a-z][a-z0-9_-]*$": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["tileId", "weight"],
+            "properties": {
+              "tileId": { "type": "string", "minLength": 1 },
+              "weight": { "type": "number", "exclusiveMinimum": 0 },
+              "themeId": { "type": "string", "minLength": 1, "description": "Theme tag, if this variant is theme-specific." }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "cellClassification": {
+      "type": "array",
+      "description": "Opt-in per-cell classification and resolution provenance. Sparse array — only boundary and notable cells included. Emitted when the composer is invoked with provenance: true.",
+      "items": {
+        "$ref": "#/$defs/cellClassificationEntry"
+      }
+    },
+    "layerManifest": {
+      "type": "array",
+      "description": "Structured metadata for each layer. Order matches layers[] array.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "index", "kind", "source"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "index": { "type": "integer", "minimum": 0, "description": "Index into the layers[] array." },
+          "kind": { "type": "string", "enum": ["base", "transition", "overlay", "emit", "clutter"] },
+          "renderOrder": { "type": "integer", "minimum": 0 },
+          "source": { "type": "string", "enum": ["variant-selection", "marching-squares", "materialEmits", "blue-noise", "wfc"], "description": "What produced this layer." },
+          "layerTag": { "type": "string", "description": "For overlays: the layerTag from the transition definition." },
+          "sourceMaterial": { "type": "string", "description": "For emit layers: the material whose materialEmits rule produced this layer." },
+          "description": { "type": "string", "description": "Human-readable description for tooling display." }
+        }
+      }
     }
   },
   "$defs": {
@@ -355,6 +421,76 @@
         },
         "levelIntentRef": {
           "type": "string"
+        }
+      }
+    },
+    "cellClassificationEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y"],
+      "properties": {
+        "x": { "type": "integer", "minimum": 0 },
+        "y": { "type": "integer", "minimum": 0 },
+        "base": {
+          "type": "object",
+          "description": "Base layer resolution info.",
+          "additionalProperties": false,
+          "properties": {
+            "material": { "type": "string" },
+            "variant": { "type": "string", "description": "Selected variant tileId." },
+            "variantRoll": { "type": "number", "description": "PRNG roll value (0-1) that selected this variant." }
+          }
+        },
+        "transition": {
+          "type": "object",
+          "description": "Transition layer resolution info.",
+          "additionalProperties": false,
+          "properties": {
+            "boundary": { "type": "array", "items": { "type": "string" }, "minItems": 2, "maxItems": 2 },
+            "msCase": { "type": "integer", "minimum": 0, "maximum": 15 },
+            "cornerBits": { "type": "string", "pattern": "^[01]{4}$" },
+            "hit": {
+              "type": "string",
+              "enum": ["exact", "transform", "gap"],
+              "description": "Resolution result: exact = tile found for this case, transform = tile found via transform equivalent (e.g., flipX of another case), gap = no matching tile found (missing asset)."
+            },
+            "tileId": { "type": "string" },
+            "sourceCase": { "type": "integer", "description": "Original MS case when hit is transform." },
+            "transform": { "type": "string", "description": "Transform applied when hit is transform." }
+          }
+        },
+        "overlays": {
+          "type": "array",
+          "description": "Overlay layer resolution info (one per renderOrder).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "renderOrder": { "type": "integer" },
+              "layerTag": { "type": "string" },
+              "hit": {
+                "type": "string",
+                "enum": ["exact", "gap"],
+                "description": "Resolution result: exact = tile found for this case, gap = no matching tile (overlays do not use transform fallback)."
+              },
+              "tileId": { "type": "string" }
+            }
+          }
+        },
+        "emits": {
+          "type": "array",
+          "description": "Emit layer placement info.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "sourceMaterial": { "type": "string" },
+              "tileId": { "type": "string" },
+              "layer": { "type": "string" },
+              "dx": { "type": "integer" },
+              "dy": { "type": "integer" }
+            }
+          }
         }
       }
     }

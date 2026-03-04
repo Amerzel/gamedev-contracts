@@ -463,6 +463,23 @@
         }
       }
     },
+    "materialProperties": {
+      "type": "object",
+      "description": "Per-material gameplay metadata. Keys must match entries in materials[]. Values define known typed fields for common gameplay metadata. additionalProperties: true on inner objects is an intentional exception to the repo-wide convention — allows engine-specific and game-specific extensions without schema changes.",
+      "patternProperties": {
+        "^[a-z][a-z0-9_-]*$": {
+          "type": "object",
+          "properties": {
+            "walkable": { "type": "boolean", "description": "Whether this material is walkable." },
+            "movementCost": { "type": "number", "minimum": 0, "description": "Relative movement cost (1.0 = normal)." },
+            "collisionGroup": { "type": "string", "description": "Collision group identifier (e.g. terrain, obstacle, solid)." },
+            "soundGroup": { "type": "string", "description": "Footstep/ambient sound group (e.g. grass, stone, water)." }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
     "materialEmits": {
       "type": "object",
       "description": "Additional tile layers emitted per material. Keys are material IDs. For each map cell where that material is the base, emit rules place tiles into additional named layers at optional grid offsets.",

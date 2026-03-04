@@ -65,6 +65,82 @@
   },
   "consumed_fields": ["regions", "paths", "style_hints.boundary_softening"],
   "ignored_fields": ["style_hints.palette_override"],
+  "collisionGrid": {
+    "encoding": "rle",
+    "rows": [
+      "0:4",
+      "0:1,0:2,0:1",
+      "0:1,0:1,1:2",
+      "0:2,1:2"
+    ],
+    "legend": {
+      "0": "terrain",
+      "1": "obstacle"
+    }
+  },
+  "variantWeights": {
+    "grass": [
+      { "tileId": "grass_base", "weight": 1.0 },
+      { "tileId": "grass_v1", "weight": 0.3 }
+    ],
+    "dirt": [
+      { "tileId": "dirt_base", "weight": 1.0 },
+      { "tileId": "dirt_v1", "weight": 0.2 }
+    ],
+    "water": [
+      { "tileId": "water_base", "weight": 1.0 }
+    ]
+  },
+  "cellClassification": [
+    {
+      "x": 1, "y": 1,
+      "base": { "material": "dirt", "variant": "dirt_base", "variantRoll": 0.55 },
+      "transition": {
+        "boundary": ["dirt", "grass"],
+        "msCase": 8,
+        "cornerBits": "0001",
+        "hit": "exact",
+        "tileId": "dirt_grass_ms0001"
+      }
+    },
+    {
+      "x": 2, "y": 2,
+      "base": { "material": "water", "variant": "water_base", "variantRoll": 0.10 }
+    },
+    {
+      "x": 1, "y": 2,
+      "base": { "material": "grass", "variant": "grass_base", "variantRoll": 0.33 },
+      "transition": {
+        "boundary": ["dirt", "grass"],
+        "msCase": 6,
+        "cornerBits": "0110",
+        "hit": "transform",
+        "tileId": "dirt_grass_ms0001",
+        "sourceCase": 8,
+        "transform": "flipX"
+      },
+      "overlays": [
+        { "renderOrder": 10, "layerTag": "outline", "hit": "exact", "tileId": "grass_water_ms0110_outline" }
+      ]
+    }
+  ],
+  "layerManifest": [
+    {
+      "name": "terrain",
+      "index": 0,
+      "kind": "base",
+      "source": "variant-selection",
+      "description": "Base terrain layer with variant-selected tiles."
+    },
+    {
+      "name": "transition",
+      "index": 1,
+      "kind": "transition",
+      "renderOrder": 0,
+      "source": "marching-squares",
+      "description": "Transition tiles resolved via marching-squares."
+    }
+  ],
   "meta": {
     "coordSystem": "top-left",
     "tileSize": 16,
