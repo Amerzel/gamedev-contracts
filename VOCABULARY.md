@@ -209,3 +209,66 @@ Answers: "What tool created this document, and when?"
 Answers: "What source data was used to generate this document?"
 
 Both fields are optional. `producer` is defined by this vocabulary (all tools). `provenance` is tool-specific (currently used by TerrainComposer) and its shape varies by schema.
+
+---
+
+## 9. Transition Positions
+
+Transition entries in `terrain_pack.v1` and provenance records in `resolved_map.v1` use a `positions` array to identify which spatial locations around a tile have the secondary material present. This replaces the bit-encoded `cornerBits` string, which suffered from LSB-vs-MSB ambiguity across tools.
+
+### Position Vocabularies per Model
+
+Each tile model defines its own set of named positions:
+
+**Marching Squares (MS-14)** — 4 corner positions:
+
+```
+UL ──── UR
+│        │
+│  tile  │
+│        │
+DL ──── DR
+```
+
+Enum: `DL`, `DR`, `UL`, `UR`
+
+**Blob-47** — 8 neighbor directions:
+
+```
+NW   N   NE
+  ╲  │  ╱
+W ── ■ ── E
+  ╱  │  ╲
+SW   S   SE
+```
+
+Enum: `E`, `N`, `NE`, `NW`, `S`, `SE`, `SW`, `W`
+
+Corner directions (`NE`, `SE`, `SW`, `NW`) require both adjacent edges to be set.
+
+### Rules
+
+- **Array order:** `positions` arrays **MUST** be alphabetically sorted. Example: case 5 → `["DR", "UL"]`, not `["UL", "DR"]`.
+- **Uniqueness:** No duplicate entries. Schemas enforce `uniqueItems: true`.
+- **Case-sensitive:** Values are uppercase. Schemas enforce exact enum matching.
+- **Model-conditional validation:** The valid enum values depend on the `model` field. The schema uses `allOf` conditional blocks to validate the correct set per model.
+- **`caseId` retained:** The numeric `case` field remains as an internal implementation detail for mask generator lookups. It is not deprecated.
+
+### Field Authority During Migration
+
+During the dual-write migration period (v1 schemas), both `positions` and `cornerBits` may be present. The authority rule is:
+
+**`positions` is authoritative when present.** `cornerBits` exists solely for backward compatibility with consumers that have not yet adopted the named format.
+
+**Reader algorithm (all consumers):**
+
+1. If `positions` array is present → use it (authoritative)
+2. Else if `case` (caseId) is present → derive via `idToPositions(case, model)`
+3. Else if `cornerBits` is present → derive via `cornerBitsToId(bits, "lsb")` → `idToPositions()`
+4. Else → error (insufficient data)
+
+**Writer convention:** During dual-write, derive `positions` first (from the canonical case definition), then derive `cornerBits` from `positions` for backward compatibility. The named array is the source of truth at write time.
+
+### Why This Replaced `cornerBits`
+
+The bit-encoded `cornerBits` string had an inherent ambiguity: the compose pipeline wrote strings in LSB-first order (`[DR, UR, UL, DL]`), but JavaScript's `parseInt(raw, 2)` reads MSB-first. Different tools independently chose different conventions — the pack writer used LSB-first while the map resolver used `toString(2).padStart()` (MSB-first) — producing opposite strings for the same case without runtime failures (because the resolver keyed on numeric `caseId`). Named position arrays eliminate this class of encoding mismatch entirely.

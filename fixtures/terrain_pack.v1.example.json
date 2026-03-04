@@ -11,7 +11,11 @@
     "description": "Terrain pack for the Ashwood Forest zone in Emberfall",
     "author": "seedframe-team"
   },
-  "materials": ["dirt", "grass", "water"],
+  "materials": [
+    "dirt",
+    "grass",
+    "water"
+  ],
   "colorMap": {
     "dirt": "#8B6914",
     "grass": "#4A7C2E",
@@ -20,59 +24,112 @@
   "transitions": [
     {
       "id": "dirt-grass-ms01",
-      "boundary": ["dirt", "grass"],
+      "boundary": [
+        "dirt",
+        "grass"
+      ],
       "model": "marching-squares",
       "case": 8,
       "cornerBits": "0001",
       "tileId": "dirt_grass_ms0001",
-      "transform": "none"
+      "transform": "none",
+      "positions": [
+        "DL"
+      ]
     },
     {
       "id": "dirt-grass-ms02",
-      "boundary": ["dirt", "grass"],
+      "boundary": [
+        "dirt",
+        "grass"
+      ],
       "model": "marching-squares",
       "case": 6,
       "cornerBits": "0110",
       "tileId": "dirt_grass_ms0110",
-      "transform": "none"
+      "transform": "none",
+      "positions": [
+        "UL",
+        "UR"
+      ]
     },
     {
       "id": "dirt-water-ms01",
-      "boundary": ["dirt", "water"],
+      "boundary": [
+        "dirt",
+        "water"
+      ],
       "model": "marching-squares",
       "case": 8,
       "cornerBits": "0001",
       "tileId": "dirt_water_ms0001",
-      "transform": "none"
+      "transform": "none",
+      "positions": [
+        "DL"
+      ]
     },
     {
       "id": "grass-water-ms01",
-      "boundary": ["grass", "water"],
+      "boundary": [
+        "grass",
+        "water"
+      ],
       "model": "marching-squares",
       "case": 6,
       "cornerBits": "0110",
       "tileId": "grass_water_ms0110",
       "transform": "none",
-      "renderOrder": 0
+      "renderOrder": 0,
+      "positions": [
+        "UL",
+        "UR"
+      ]
     },
     {
       "id": "grass-water-ms01-outline",
-      "boundary": ["grass", "water"],
+      "boundary": [
+        "grass",
+        "water"
+      ],
       "model": "marching-squares",
       "case": 6,
       "cornerBits": "0110",
       "tileId": "grass_water_ms0110_outline",
       "transform": "none",
       "renderOrder": 10,
-      "layerTag": "outline"
+      "layerTag": "outline",
+      "positions": [
+        "UL",
+        "UR"
+      ]
     }
   ],
   "variants": [
-    { "tileId": "grass_base", "material": "grass", "weight": 1.0 },
-    { "tileId": "grass_v1", "material": "grass", "weight": 0.3 },
-    { "tileId": "dirt_base", "material": "dirt", "weight": 1.0 },
-    { "tileId": "dirt_v1", "material": "dirt", "weight": 0.2 },
-    { "tileId": "water_base", "material": "water", "weight": 1.0 }
+    {
+      "tileId": "grass_base",
+      "material": "grass",
+      "weight": 1.0
+    },
+    {
+      "tileId": "grass_v1",
+      "material": "grass",
+      "weight": 0.3
+    },
+    {
+      "tileId": "dirt_base",
+      "material": "dirt",
+      "weight": 1.0
+    },
+    {
+      "tileId": "dirt_v1",
+      "material": "dirt",
+      "weight": 0.2
+    },
+    {
+      "tileId": "water_base",
+      "material": "water",
+      "weight": 1.0
+    }
   ],
   "atlas": {
     "image": "ashwood-forest.png",
@@ -81,30 +138,74 @@
     "rows": 8
   },
   "tileIndex": {
-    "grass_base": { "col": 0, "row": 0 },
-    "grass_v1": { "col": 1, "row": 0 },
-    "dirt_base": { "col": 2, "row": 0 },
-    "dirt_v1": { "col": 3, "row": 0 },
+    "grass_base": {
+      "col": 0,
+      "row": 0
+    },
+    "grass_v1": {
+      "col": 1,
+      "row": 0
+    },
+    "dirt_base": {
+      "col": 2,
+      "row": 0
+    },
+    "dirt_v1": {
+      "col": 3,
+      "row": 0
+    },
     "water_base": {
-      "col": 4, "row": 0,
+      "col": 4,
+      "row": 0,
       "frameCount": 4,
       "frameDurationMs": 200,
       "animation": {
         "frames": [
-          { "col": 4, "row": 0, "durationMs": 200 },
-          { "col": 5, "row": 0, "durationMs": 200 },
-          { "col": 6, "row": 0, "durationMs": 300 },
-          { "col": 7, "row": 0, "durationMs": 200 }
+          {
+            "col": 4,
+            "row": 0,
+            "durationMs": 200
+          },
+          {
+            "col": 5,
+            "row": 0,
+            "durationMs": 200
+          },
+          {
+            "col": 6,
+            "row": 0,
+            "durationMs": 300
+          },
+          {
+            "col": 7,
+            "row": 0,
+            "durationMs": 200
+          }
         ],
         "loop": true,
         "label": "ripple"
       }
     },
-    "dirt_grass_ms0001": { "col": 0, "row": 1 },
-    "dirt_grass_ms0110": { "col": 1, "row": 1 },
-    "dirt_water_ms0001": { "col": 2, "row": 1 },
-    "grass_water_ms0110": { "col": 3, "row": 1 },
-    "grass_water_ms0110_outline": { "col": 4, "row": 1 }
+    "dirt_grass_ms0001": {
+      "col": 0,
+      "row": 1
+    },
+    "dirt_grass_ms0110": {
+      "col": 1,
+      "row": 1
+    },
+    "dirt_water_ms0001": {
+      "col": 2,
+      "row": 1
+    },
+    "grass_water_ms0110": {
+      "col": 3,
+      "row": 1
+    },
+    "grass_water_ms0110_outline": {
+      "col": 4,
+      "row": 1
+    }
   },
   "materialProperties": {
     "grass": {

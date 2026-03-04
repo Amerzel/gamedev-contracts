@@ -320,8 +320,14 @@
           },
           "cornerBits": {
             "type": "string",
-            "description": "Bit-string encoding which corners belong to the secondary material. Character order is DR(bit0), UR(bit1), UL(bit2), DL(bit3) for 4-bit marching squares. The numeric `case` value is computed by reversing this string and parsing as binary (e.g. cornerBits \"0001\" → reversed \"1000\" → case 8).",
+            "description": "Deprecated: prefer the `positions` array. Bit-string encoding which corners belong to the secondary material. Character order is DR(bit0), UR(bit1), UL(bit2), DL(bit3) for 4-bit marching squares. The numeric `case` value is computed by reversing this string and parsing as binary (e.g. cornerBits \"0001\" → reversed \"1000\" → case 8). Will be removed in terrain_pack.v2.",
             "pattern": "^[01]{4,8}$"
+          },
+          "positions": {
+            "type": "array",
+            "description": "Named spatial positions indicating which locations around the tile have the secondary material. Values are model-specific: marching-squares uses corner positions (DL, DR, UL, UR), blob-47 uses 8-neighbor directions (E, N, NE, NW, S, SE, SW, W). Alphabetically sorted. Authoritative when present — see VOCABULARY.md §9.",
+            "items": { "type": "string" },
+            "uniqueItems": true
           },
           "ruleId": {
             "type": "string"
@@ -375,7 +381,12 @@
               "required": ["model"]
             },
             "then": {
-              "required": ["case", "cornerBits"]
+              "required": ["case", "cornerBits"],
+              "properties": {
+                "positions": {
+                  "items": { "enum": ["DL", "DR", "UL", "UR"] }
+                }
+              }
             }
           },
           {
@@ -384,7 +395,12 @@
               "required": ["model"]
             },
             "then": {
-              "required": ["case", "cornerBits"]
+              "required": ["case", "cornerBits"],
+              "properties": {
+                "positions": {
+                  "items": { "enum": ["E", "N", "NE", "NW", "S", "SE", "SW", "W"] }
+                }
+              }
             }
           },
           {
