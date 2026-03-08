@@ -19,6 +19,11 @@
         "$ref": "#/$defs/entity"
       }
     },
+    "referencePolicy": {
+      "type": "string",
+      "description": "Signals how entity references should be interpreted. 'abstract-id' means refs are abstract ea:-prefixed IDs, not engine-specific paths.",
+      "enum": ["abstract-id"]
+    },
     "producer": {
       "type": "object",
       "description": "Identifies the tool that generated this document (VOCABULARY.md §1).",
@@ -114,6 +119,27 @@
           "type": "array",
           "items": {
             "type": "string"
+          }
+        },
+        "behavior": {
+          "type": "object",
+          "description": "Optional behavior tree/AI linkage for runtime consumption.",
+          "additionalProperties": false,
+          "required": ["ref"],
+          "properties": {
+            "ref": {
+              "type": "string",
+              "description": "Reference to a behavior export, e.g. 'behavior:wolf-pack-predator'."
+            },
+            "kind": {
+              "type": "string",
+              "enum": ["godot-script", "limboai", "beehave", "custom"],
+              "description": "Runtime behavior system adapter type."
+            },
+            "adapter": {
+              "type": "string",
+              "description": "Optional adapter identifier for the runtime behavior system."
+            }
           }
         }
       }

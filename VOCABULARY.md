@@ -272,3 +272,40 @@ During the dual-write migration period (v1 schemas), both `positions` and `corne
 ### Why This Replaced `cornerBits`
 
 The bit-encoded `cornerBits` string had an inherent ambiguity: the compose pipeline wrote strings in LSB-first order (`[DR, UR, UL, DL]`), but JavaScript's `parseInt(raw, 2)` reads MSB-first. Different tools independently chose different conventions — the pack writer used LSB-first while the map resolver used `toString(2).padStart()` (MSB-first) — producing opposite strings for the same case without runtime failures (because the resolver keyed on numeric `caseId`). Named position arrays eliminate this class of encoding mismatch entirely.
+
+---
+
+## §10 — Asset & Engine Reference Policy
+
+### Canonical references
+
+- All cross-tool references in Forge contracts use abstract prefixed IDs (§7).
+- Entity references: `ea:{kebab-case-id}` (e.g., `ea:ember-wolf`)
+- Quest references: `qf:{kebab-case-id}`
+- Behavior references: `behavior:{kebab-case-id}`
+- Terrain/tileset references: `tc:{kebab-case-id}`, `ts:{kebab-case-id}`
+
+### Pack-relative artifact paths
+
+- Manifest artifact entries use pack-relative paths (e.g., `./terrain/resolved_map.v1.json`).
+- Never absolute paths or engine-specific paths in manifests.
+
+### Engine-specific path resolution
+
+- Engine-specific paths (e.g., Godot `res://`, Unity `Assets/`) are resolved by the consumer adapter.
+- Forge exports **MUST NOT** embed engine-specific paths in canonical contract outputs.
+- Adapter outputs (e.g., `.tres` files, `.gd` scripts) **MAY** use engine paths — these are explicitly classified as adapter artifacts, not canonical contracts.
+
+### referencePolicy field
+
+- Exports that follow this policy **SHOULD** include `referencePolicy: 'abstract-id'` in their envelope.
+- This signals to consumers that all references are abstract and need adapter resolution.
+
+### Per-domain reference conventions
+
+- Terrain tiles: pack-internal atlas coordinates (col/row in tileset)
+- Entities: `ea:` prefixed IDs
+- Quests: `qf:` prefixed IDs
+- Encounters: reference entities via `ea:` IDs, quests via `qf:` IDs
+- Behaviors: `behavior:` prefixed IDs, linked to entities via optional `behavior.ref` field in entity schema
+- Assets: pack-relative paths within zone pack, or abstract asset IDs

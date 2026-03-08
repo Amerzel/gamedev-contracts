@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "generatedAt": "2026-02-22T12:00:00.000Z"
   },
+  "referencePolicy": "abstract-id",
   "meta": {
     "description": "Ashwood Forest entity catalog for Emberfall"
   },
@@ -53,6 +54,10 @@
         "xp_reward": 25,
         "abilities": ["ember_bite"],
         "loot_table_ref": "ea:lt-wolf-common"
+      },
+      "behavior": {
+        "ref": "behavior:wolf-pack-predator",
+        "kind": "limboai"
       }
     },
     {
